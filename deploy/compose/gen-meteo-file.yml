@@ -1,0 +1,14 @@
+name: gen-meteo-file
+
+services:
+  gen-meteo-file:
+    image: nav-green/gen-meteo-file:v0.0.1
+    container_name: gen-meteo-file
+    restart: always
+    environment:
+      - LOG_LEVEL=info
+      - NC_DIR=nc-files
+      - CSV_DIR=csv-files
+    volumes:
+      - /nc-files:/data2/alist_share/nc-files
+      - /csv-files:/data1/cosco-generate-files
