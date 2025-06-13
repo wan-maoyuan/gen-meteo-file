@@ -5,5 +5,5 @@ export LOG_AGE=10
 export LOG_BACKUPS=5
 
 export NC_DIR=/data2/alist_share/nc-files
-# export CSV_DIR=/data1/cosco-generate-files
-export CSV_DIR=resources/files
+export CSV_DIR=/data1/cosco-generate-files
+# export CSV_DIR=resources/files
