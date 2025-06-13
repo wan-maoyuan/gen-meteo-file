@@ -43,6 +43,10 @@ func NewECOper(info *NCFile) (*ECOper, error) {
 		return nil, fmt.Errorf("ec_oper output file: %s already exists", info.OutputPath)
 	}
 
+	if _, err := os.Stat(info.CompressionPath); err == nil {
+		return nil, fmt.Errorf("ec_oper compression file: %s already exists", info.CompressionPath)
+	}
+
 	if err := os.MkdirAll(filepath.Dir(info.OutputPath), os.FileMode(0755)); err != nil {
 		return nil, fmt.Errorf("create ec_oper output dir: %s failed: %v", filepath.Dir(info.OutputPath), err)
 	}
@@ -135,8 +139,7 @@ func (nc *ECOper) GenerateCSV() error {
 	}
 
 	buf.Flush()
-
-	return nil
+	return zipFile(nc.info.OutputPath, nc.info.CompressionPath)
 }
 
 func (nc *ECOper) Close() {

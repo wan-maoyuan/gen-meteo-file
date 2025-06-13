@@ -10,5 +10,5 @@ services:
       - NC_DIR=nc-files
       - CSV_DIR=csv-files
     volumes:
-      - /nc-files:/data2/alist_share/nc-files
-      - /csv-files:/data1/cosco-generate-files
+      - /data2/alist_share/nc-files:/nc-files
+      - /data1/yihailan-generate-files:/csv-files

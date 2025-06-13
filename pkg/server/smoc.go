@@ -34,7 +34,7 @@ func (s *SMOCSever) Start(ctx context.Context) error {
 			return nil
 		case <-ticker.C:
 			today, _ := time.Parse("20060102", time.Now().Format("20060102"))
-			for range 3 {
+			for range 545 {
 				select {
 				case <-ctx.Done():
 					return nil
@@ -59,9 +59,10 @@ func (s *SMOCSever) GenByDate(ctx context.Context, date time.Time) error {
 	}
 
 	info := &nc.NCFile{
-		DateTime:   date,
-		InputPath:  path,
-		OutputPath: filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), date.Format(time.DateOnly), fmt.Sprintf("smoc_%s.csv", date.Format("20060102"))),
+		DateTime:        date,
+		InputPath:       path,
+		OutputPath:      filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), fmt.Sprintf("%02d", date.Month()), date.Format(time.DateOnly), fmt.Sprintf("smoc_%s.csv", date.Format("20060102"))),
+		CompressionPath: filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), fmt.Sprintf("%02d", date.Month()), date.Format(time.DateOnly), fmt.Sprintf("smoc_%s.zip", date.Format("20060102"))),
 	}
 
 	nc, err := nc.NewSMOC(info)

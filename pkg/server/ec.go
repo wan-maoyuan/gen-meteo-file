@@ -32,7 +32,7 @@ func (s *ECServer) Start(ctx context.Context) error {
 			return nil
 		case <-ticker.C:
 			today, _ := time.Parse("20060102", time.Now().Format("20060102"))
-			for range 8 * 3 {
+			for range 545 * 8 {
 				select {
 				case <-ctx.Done():
 					return nil
@@ -58,9 +58,10 @@ func (s *ECServer) GenByDate(ctx context.Context, date time.Time) error {
 
 	// /data2/alist_share/nc-files/ec_0p25/2025/2025-01-01/oper-00/ec_0p25_oper_2025010100_0h.nc
 	info := &nc.NCFile{
-		DateTime:   date,
-		InputPath:  filepath.Join(s.inputDir, fmt.Sprintf("%d", date.Year()), date.Format(time.DateOnly), fmt.Sprintf("oper-%02d", hour), fmt.Sprintf("ec_0p25_oper_%s%02d_%dh.nc", date.Format("20060102"), hour, date.Hour()-hour)),
-		OutputPath: filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), date.Format(time.DateOnly), fmt.Sprintf("ec_%s.csv", date.Format("2006010215"))),
+		DateTime:        date,
+		InputPath:       filepath.Join(s.inputDir, fmt.Sprintf("%d", date.Year()), date.Format(time.DateOnly), fmt.Sprintf("oper-%02d", hour), fmt.Sprintf("ec_0p25_oper_%s%02d_%dh.nc", date.Format("20060102"), hour, date.Hour()-hour)),
+		OutputPath:      filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), fmt.Sprintf("%02d", date.Month()), date.Format(time.DateOnly), fmt.Sprintf("ec_%s.csv", date.Format("2006010215"))),
+		CompressionPath: filepath.Join(s.outputDir, fmt.Sprintf("%d", date.Year()), fmt.Sprintf("%02d", date.Month()), date.Format(time.DateOnly), fmt.Sprintf("ec_%s.zip", date.Format("2006010215"))),
 	}
 
 	nc, err := nc.NewECOper(info)

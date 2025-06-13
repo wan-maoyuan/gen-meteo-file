@@ -84,6 +84,10 @@ func NewMFWAM(info *NCFile) (*MFWAM, error) {
 		return nil, fmt.Errorf("mfwam output file: %s already exists", info.OutputPath)
 	}
 
+	if _, err := os.Stat(info.CompressionPath); err == nil {
+		return nil, fmt.Errorf("mfwam compression file: %s already exists", info.CompressionPath)
+	}
+
 	if err := os.MkdirAll(filepath.Dir(info.OutputPath), os.FileMode(0755)); err != nil {
 		return nil, fmt.Errorf("create mfwam output dir: %s failed: %v", filepath.Dir(info.OutputPath), err)
 	}
@@ -418,8 +422,7 @@ func (nc *MFWAM) GenerateCSV() error {
 	}
 
 	buf.Flush()
-
-	return nil
+	return zipFile(nc.info.OutputPath, nc.info.CompressionPath)
 }
 
 func (nc *MFWAM) Close() {

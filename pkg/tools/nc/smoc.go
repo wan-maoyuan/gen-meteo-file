@@ -49,6 +49,10 @@ func NewSMOC(info *NCFile) (*SMOC, error) {
 		return nil, fmt.Errorf("smoc output file: %s already exists", info.OutputPath)
 	}
 
+	if _, err := os.Stat(info.CompressionPath); err == nil {
+		return nil, fmt.Errorf("smoc compression file: %s already exists", info.CompressionPath)
+	}
+
 	if err := os.MkdirAll(filepath.Dir(info.OutputPath), os.FileMode(0755)); err != nil {
 		return nil, fmt.Errorf("create smoc output dir: %s failed: %v", filepath.Dir(info.OutputPath), err)
 	}
@@ -187,7 +191,8 @@ func (nc *SMOC) GenerateCSV() error {
 		buf.Flush()
 	}
 
-	return buf.Flush()
+	buf.Flush()
+	return zipFile(nc.info.OutputPath, nc.info.CompressionPath)
 }
 
 func (nc *SMOC) Close() {
