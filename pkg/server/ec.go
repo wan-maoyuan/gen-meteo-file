@@ -32,7 +32,7 @@ func (s *ECServer) Start(ctx context.Context) error {
 			return nil
 		case <-ticker.C:
 			today, _ := time.Parse("20060102", time.Now().Format("20060102"))
-			for range 545 * 8 {
+			for range 5 * 8 {
 				select {
 				case <-ctx.Done():
 					return nil

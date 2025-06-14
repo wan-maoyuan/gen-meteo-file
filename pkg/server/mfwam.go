@@ -34,7 +34,7 @@ func (s *MFWAMServer) Start(ctx context.Context) error {
 			return nil
 		case <-ticker.C:
 			today, _ := time.Parse("20060102", time.Now().Format("20060102"))
-			for range 545 * 2 {
+			for range 5 * 2 {
 				select {
 				case <-ctx.Done():
 					return nil
